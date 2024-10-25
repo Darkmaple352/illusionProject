@@ -1,0 +1,73 @@
+let xOffset = 0; // 初始 x 偏移量
+
+function setup() {
+  createCanvas(600, 400);
+  colorMode(RGB); // 設置顏色模式為 RGB
+}
+
+function draw() {
+  background(0); //背景設為黑色
+  strokeWeight(2); //中央線條粗細
+
+  // 設定線條的位置
+  const lineHeightOffset = 75; // 線條的高度偏移量
+  const lineheight = 85; //上下線條的間隔
+
+  for (let i = 100; i < width - 100; i++) {
+    // 計算顏色，將 i 映射到色相範圍
+    let midab = (sin(i * 0.075 + xOffset) * 0.5  + 0.5) ; 
+    let midcd = (sin(i * 0.075 - xOffset) * 0.5  + 0.5) ; // 正弦函數的映射
+
+    let abcolor = lerpColor(color(255, 255, 0), color(0, 0, 255), midab); //黃藍漸層
+    let cdcolor = lerpColor(color(0, 255, 255), color(255, 0, 0), midcd); //紅藍漸層
+
+    let combine = lerpColor(abcolor, cdcolor, 0.5); //雙色漸層
+    
+    strokeCap(SQUARE)
+    stroke(combine);
+    if (keyIsPressed) {
+      if (keyIsDown(32)){
+        line(i,height / 2-lineheight, i, height / 2+lineheight)
+      }
+    }
+      line(i, height / 2-lineheight-7, i, height / 2-lineheight+7);
+      line(i, height / 2+lineheight-7, i, height / 2+lineheight+7); 
+    // 繪製主線
+
+    // 繪製干擾
+    if (keyIsPressed) {
+      if (keyIsDown(82)){
+        stroke(abcolor);
+        line(i, (height / 2-lineheight) - lineHeightOffset, i, (height / 2-lineheight) - 7);
+        line(i, (height / 2-lineheight) + 7, i, (height / 2-lineheight) + lineHeightOffset);
+      } //上半黃藍
+
+    else if (keyIsPressed) {
+      if (keyIsDown(70)){
+        stroke(cdcolor);
+        line(i, (height / 2-lineheight) - lineHeightOffset, i, (height / 2-lineheight) - 7);
+        line(i, (height / 2-lineheight) + 7, i, (height / 2-lineheight) + lineHeightOffset);
+      } //上半紅藍
+    }
+    }
+    
+if (keyIsPressed) {
+      if (keyIsDown(74)){
+        stroke(abcolor);
+        line(i, (height / 2+lineheight) - lineHeightOffset, i, (height / 2+lineheight) - 7);
+        line(i, (height / 2+lineheight) + 7, i, (height / 2+lineheight) + lineHeightOffset);
+      } //下半黃藍
+
+    else if (keyIsPressed) {
+      if (keyIsDown(85)){
+        stroke(cdcolor);
+         line(i, (height / 2+lineheight) - lineHeightOffset, i, (height / 2+lineheight) - 7);
+        line(i, (height / 2+lineheight) + 7, i, (height / 2+lineheight) + lineHeightOffset);
+      } //下半紅藍
+    }
+  }
+}
+
+  // 更新偏移量以使顏色隨時間變化
+  xOffset += 0.1;
+}
